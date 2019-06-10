@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body onload="loadChart()">
+    <h1><%= title %></h1>
+    <h2>Total Profits: <a>$<%= totalProfit%>.00</a></h2>
+    <h2>Total Early Bird Registrations: <a><%= earlyBirds%></a></h2>
+    <h2>Promo Codes:</h2>
+    <div id='promoChart'></div>
+    <h2>Total People Checked In: <a><%= checkIns%></a></h2>
+    <h2>Registrations by City:</h2>
+    <div id='registrationsChart'></div>
+    <script type="text/javascript">
+    function loadChart(){
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawCharts);
+    
+  
+      // Draw the chart and set the chart values
+      function drawCharts() {
+        var promoCodes = [
+        ['Promo Codes', 'Count'],
+        <% promoCodes.forEach(function(element) { %>
+        ['<%= element[0]%>', <%= element[1]%>],<%});%>];
+        
+        
+        var data = google.visualization.arrayToDataTable(promoCodes);
+        var options = {'width':550, 'height':275};
+      
+        
+        var chart1 = new google.visualization.PieChart(document.getElementById("promoChart"));
+        chart1.draw(data, options);
+        
+        var registrations = [
+        ['City', 'Count'],
+        <% registrations.forEach(function(element) { %>
+        ['<%= element[0]%>', <%= element[1]%>],<%});%>];
+
+        var data2 = google.visualization.arrayToDataTable(registrations);
+        var options2 = {'width':550, 'height':275};
+        var chart2 = new google.visualization.PieChart(document.getElementById("registrationsChart"));
+        chart2.draw(data2, options2);
+        
+      }
+    }</script>
+  </body>
+</html>
